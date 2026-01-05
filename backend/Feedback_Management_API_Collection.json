@@ -1,0 +1,272 @@
+{
+  "info": {
+    "name": "Feedback Management API",
+    "description": "Complete API collection for Feedback Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Feedback",
+      "item": [
+        {
+          "name": "Get All Feedback (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Feedback by Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/?category=food",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "food"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get High Rated Feedback",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/?minRating=4",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", ""],
+              "query": [
+                {
+                  "key": "minRating",
+                  "value": "4"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Feedback",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Submit Feedback",
+      "item": [
+        {
+          "name": "Submit Food Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": \"{{order_id}}\",\n  \"rating\": 5,\n  \"comment\": \"Excellent food quality and taste! Highly recommended.\",\n  \"category\": \"food\",\n  \"isAnonymous\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('feedback_id', response.data._id);",
+                  "    console.log('✅ Feedback submitted successfully');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Submit Service Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": \"{{order_id}}\",\n  \"rating\": 5,\n  \"comment\": \"Staff was very friendly and attentive. Great service!\",\n  \"category\": \"service\",\n  \"isAnonymous\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", ""]
+            }
+          }
+        },
+        {
+          "name": "Submit Anonymous Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": \"{{order_id}}\",\n  \"rating\": 3,\n  \"comment\": \"Food was okay but could be improved\",\n  \"category\": \"food\",\n  \"isAnonymous\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", ""]
+            }
+          }
+        },
+        {
+          "name": "Submit Delivery Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": \"{{order_id}}\",\n  \"rating\": 4,\n  \"comment\": \"Fast delivery and food was still hot\",\n  \"category\": \"delivery\",\n  \"isAnonymous\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Feedback",
+      "item": [
+        {
+          "name": "Update Feedback Comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"Updated: Excellent food and quick service!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Feedback",
+      "item": [
+        {
+          "name": "Delete Feedback (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/feedback/{{feedback_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["feedback", "{{feedback_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api"
+    }
+  ]
+}
+

@@ -1,0 +1,305 @@
+{
+  "info": {
+    "name": "Menu Management API",
+    "description": "Complete API collection for Menu Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Menu Items",
+      "item": [
+        {
+          "name": "Get All Menu Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Menu items retrieved successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.success).to.be.true;",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "    console.log('✅ Retrieved', response.count, 'menu items');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Menu Items by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/menu/?category=main-course",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "main-course"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Available Menu Items Only",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/menu/?available=true",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""],
+              "query": [
+                {
+                  "key": "available",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Menu Item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/menu/{{menu_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "{{menu_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Menu Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/menu/categories",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "categories"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Menu Items (Admin Only)",
+      "item": [
+        {
+          "name": "Create Starter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chicken Wings\",\n  \"category\": \"starters\",\n  \"description\": \"Crispy chicken wings with spicy buffalo sauce\",\n  \"price\": 8.99,\n  \"preparationTime\": 15,\n  \"ingredients\": [\n    {\"name\": \"Chicken Wings\", \"quantity\": \"6 pieces\"},\n    {\"name\": \"Buffalo Sauce\", \"quantity\": \"50ml\"}\n  ],\n  \"nutritionalInfo\": {\n    \"calories\": 320,\n    \"protein\": 28,\n    \"carbs\": 8,\n    \"fat\": 18\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('menu_id', response.data._id);",
+                  "    console.log('✅ Menu item created:', response.data.name);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Main Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Grilled Salmon\",\n  \"category\": \"main-course\",\n  \"description\": \"Fresh Atlantic salmon grilled to perfection with herbs\",\n  \"price\": 24.99,\n  \"preparationTime\": 25,\n  \"ingredients\": [\n    {\"name\": \"Salmon Fillet\", \"quantity\": \"200g\"},\n    {\"name\": \"Lemon\", \"quantity\": \"1 slice\"},\n    {\"name\": \"Herbs\", \"quantity\": \"10g\"}\n  ],\n  \"nutritionalInfo\": {\n    \"calories\": 380,\n    \"protein\": 35,\n    \"carbs\": 5,\n    \"fat\": 22\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Dessert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chocolate Lava Cake\",\n  \"category\": \"desserts\",\n  \"description\": \"Warm chocolate cake with molten center, served with vanilla ice cream\",\n  \"price\": 9.99,\n  \"preparationTime\": 20,\n  \"ingredients\": [\n    {\"name\": \"Dark Chocolate\", \"quantity\": \"100g\"},\n    {\"name\": \"Butter\", \"quantity\": \"50g\"},\n    {\"name\": \"Flour\", \"quantity\": \"30g\"},\n    {\"name\": \"Vanilla Ice Cream\", \"quantity\": \"1 scoop\"}\n  ],\n  \"nutritionalInfo\": {\n    \"calories\": 520,\n    \"protein\": 6,\n    \"carbs\": 48,\n    \"fat\": 35\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Drink",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Fresh Orange Juice\",\n  \"category\": \"drinks\",\n  \"description\": \"Freshly squeezed orange juice served cold\",\n  \"price\": 4.99,\n  \"preparationTime\": 5,\n  \"ingredients\": [\n    {\"name\": \"Fresh Oranges\", \"quantity\": \"3 pieces\"}\n  ],\n  \"nutritionalInfo\": {\n    \"calories\": 110,\n    \"protein\": 2,\n    \"carbs\": 26,\n    \"fat\": 0\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Menu Items (Admin Only)",
+      "item": [
+        {
+          "name": "Update Menu Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 12.99,\n  \"description\": \"Updated description with premium ingredients\",\n  \"isAvailable\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/{{menu_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "{{menu_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Menu Item Availability",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isAvailable\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/{{menu_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "{{menu_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Menu Items (Admin Only)",
+      "item": [
+        {
+          "name": "Delete Menu Item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/menu/{{menu_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "{{menu_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api"
+    }
+  ]
+}
+

@@ -1,0 +1,285 @@
+{
+  "info": {
+    "name": "Inventory Management API",
+    "description": "Complete API collection for Inventory Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Inventory",
+      "item": [
+        {
+          "name": "Get All Inventory Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/inventory/",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Low Stock Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/inventory/low-stock",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "low-stock"]
+            }
+          }
+        },
+        {
+          "name": "Get Expiring Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/inventory/expiring",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "expiring"]
+            }
+          }
+        },
+        {
+          "name": "Get Single Inventory Item",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/inventory/{{inventory_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "{{inventory_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Inventory Items (Admin Only)",
+      "item": [
+        {
+          "name": "Add Meat Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chicken Breast\",\n  \"category\": \"Meat\",\n  \"currentStock\": 50,\n  \"minimumStock\": 10,\n  \"unit\": \"kg\",\n  \"supplier\": \"Fresh Foods Ltd\",\n  \"costPerUnit\": 8.50,\n  \"lastRestocked\": \"2024-01-15\",\n  \"expiryDate\": \"2024-02-15\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('inventory_id', response.data._id);",
+                  "    console.log('✅ Inventory item added:', response.data.name);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add Vegetable Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Fresh Tomatoes\",\n  \"category\": \"Vegetables\",\n  \"currentStock\": 20,\n  \"minimumStock\": 5,\n  \"unit\": \"kg\",\n  \"supplier\": \"Farm Fresh Co\",\n  \"costPerUnit\": 3.50,\n  \"lastRestocked\": \"2024-01-15\",\n  \"expiryDate\": \"2024-01-22\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", ""]
+            }
+          }
+        },
+        {
+          "name": "Add Beverage Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Orange Juice (1L)\",\n  \"category\": \"Beverages\",\n  \"currentStock\": 30,\n  \"minimumStock\": 12,\n  \"unit\": \"bottle\",\n  \"supplier\": \"Beverage Corp\",\n  \"costPerUnit\": 2.99,\n  \"lastRestocked\": \"2024-01-15\",\n  \"expiryDate\": \"2024-04-15\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", ""]
+            }
+          }
+        },
+        {
+          "name": "Add Spice Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Black Pepper Powder\",\n  \"category\": \"Spices\",\n  \"currentStock\": 5,\n  \"minimumStock\": 2,\n  \"unit\": \"kg\",\n  \"supplier\": \"Spice World\",\n  \"costPerUnit\": 15.00,\n  \"lastRestocked\": \"2024-01-10\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Inventory",
+      "item": [
+        {
+          "name": "Update Stock Level",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentStock\": 60\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/{{inventory_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "{{inventory_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Restock Inventory",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentStock\": 80,\n  \"lastRestocked\": \"2024-01-20\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/{{inventory_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "{{inventory_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Inventory (Admin Only)",
+      "item": [
+        {
+          "name": "Delete Inventory Item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/inventory/{{inventory_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["inventory", "{{inventory_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api"
+    }
+  ]
+}
+

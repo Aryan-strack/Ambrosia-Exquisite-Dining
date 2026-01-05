@@ -1,0 +1,349 @@
+{
+  "info": {
+    "name": "Restaurant Management API",
+    "description": "Complete API testing for Restaurant Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.success && response.token) {",
+                  "        pm.environment.set('jwt_token', response.token);",
+                  "        console.log('✅ Login successful, token saved');",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Menu Management",
+      "item": [
+        {
+          "name": "Create Menu Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chicken Burger\",\n  \"category\": \"main-course\",\n  \"description\": \"Delicious grilled chicken burger with fresh vegetables\",\n  \"price\": 15.99,\n  \"preparationTime\": 20,\n  \"ingredients\": [\n    {\n      \"name\": \"Chicken Patty\",\n      \"quantity\": \"1 piece\"\n    },\n    {\n      \"name\": \"Lettuce\",\n      \"quantity\": \"2 leaves\"\n    },\n    {\n      \"name\": \"Tomato\",\n      \"quantity\": \"2 slices\"\n    }\n  ],\n  \"nutritionalInfo\": {\n    \"calories\": 450,\n    \"protein\": 25,\n    \"carbs\": 35,\n    \"fat\": 20\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Menu item created successfully', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.success).to.be.true;",
+                  "    pm.expect(response.data).to.have.property('name');",
+                  "    pm.environment.set('menu_id', response.data._id);",
+                  "    console.log('✅ Menu item created:', response.data.name);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Menu Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Menu items retrieved successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.success).to.be.true;",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "    console.log('✅ Retrieved', response.count, 'menu items');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Single Menu Item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/menu/{{menu_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "{{menu_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Single menu item retrieved', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.success).to.be.true;",
+                  "    pm.expect(response.data).to.have.property('name');",
+                  "    console.log('✅ Retrieved menu item:', response.data.name);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Menu Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 17.99,\n  \"description\": \"Updated: Premium grilled chicken burger with fresh vegetables and special sauce\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/{{menu_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "{{menu_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Menu item updated successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.success).to.be.true;",
+                  "    pm.expect(response.data.price).to.eql(17.99);",
+                  "    console.log('✅ Menu item updated successfully');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Menu Item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/menu/{{menu_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "{{menu_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Menu item deleted successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.success).to.be.true;",
+                  "    console.log('✅ Menu item deleted successfully');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Menu Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/menu/categories",
+              "host": ["{{base_url}}"],
+              "path": ["menu", "categories"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Categories retrieved successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.success).to.be.true;",
+                  "    pm.expect(response.data).to.be.an('array');",
+                  "    console.log('✅ Available categories:', response.data);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sample Menu Items",
+      "item": [
+        {
+          "name": "Create Starter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chicken Wings\",\n  \"category\": \"starters\",\n  \"description\": \"Crispy chicken wings with spicy buffalo sauce\",\n  \"price\": 8.99,\n  \"preparationTime\": 15\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Dessert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chocolate Cake\",\n  \"category\": \"desserts\",\n  \"description\": \"Rich chocolate cake with vanilla ice cream\",\n  \"price\": 6.99,\n  \"preparationTime\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Drink",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Fresh Orange Juice\",\n  \"category\": \"drinks\",\n  \"description\": \"Freshly squeezed orange juice\",\n  \"price\": 3.99,\n  \"preparationTime\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/menu/",
+              "host": ["{{base_url}}"],
+              "path": ["menu", ""]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api"
+    },
+    {
+      "key": "admin_email",
+      "value": "superadmin@restaurant.com"
+    },
+    {
+      "key": "admin_password",
+      "value": "admin123"
+    }
+  ]
+}

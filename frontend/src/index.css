@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-black: #0f172a;
+  --color-brand-gold: #d4af37;
+  --color-brand-gold-hover: #b5952f;
+  --color-brand-white: #ffffff;
+  --color-brand-gray: #f8fafc;
+  --color-brand-red: #ef4444;
+  
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+
+  --animate-fade-in: fadeIn 0.5s ease-out;
+  --animate-slide-up: slideUp 0.5s ease-out;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    scroll-behavior: smooth;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  body {
+    background-color: var(--color-brand-gray);
+    color: var(--color-brand-black);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand-gold text-brand-black font-semibold px-6 py-2 rounded-lg 
+           hover:bg-brand-gold-hover transition-all duration-300 shadow-md 
+           hover:shadow-lg active:scale-95;
+  }
+
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  
+  .card-hover {
+    @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

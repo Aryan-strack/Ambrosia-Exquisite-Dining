@@ -1,0 +1,274 @@
+{
+  "info": {
+    "name": "Reservation Management API",
+    "description": "Complete API collection for Reservation Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Reservations",
+      "item": [
+        {
+          "name": "Get All Reservations (Admin/Staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", ""]
+            }
+          }
+        },
+        {
+          "name": "Get My Reservations (Customer)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/my",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", "my"]
+            }
+          }
+        },
+        {
+          "name": "Get Reservations by Date",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/?date=2024-01-20",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", ""],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2024-01-20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Reservation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservations/{{reservation_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", "{{reservation_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Reservations",
+      "item": [
+        {
+          "name": "Create Table Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tableNumber\": \"T5\",\n  \"reservationDate\": \"2024-02-10\",\n  \"reservationTime\": \"19:00\",\n  \"partySize\": 4,\n  \"specialRequests\": \"Window table preferred, celebrating birthday\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservations/",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('reservation_id', response.data._id);",
+                  "    console.log('✅ Reservation created:', response.data.tableNumber);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Group Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tableNumber\": \"T12\",\n  \"reservationDate\": \"2024-02-15\",\n  \"reservationTime\": \"18:30\",\n  \"partySize\": 8,\n  \"specialRequests\": \"Need long table for large group, dietary restrictions noted\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservations/",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Weekend Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tableNumber\": \"T3\",\n  \"reservationDate\": \"2024-02-17\",\n  \"reservationTime\": \"20:00\",\n  \"partySize\": 2,\n  \"specialRequests\": \"Romantic dinner setup with candle\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservations/",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Reservations",
+      "item": [
+        {
+          "name": "Confirm Reservation (Staff)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservations/{{reservation_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", "{{reservation_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Reservation Time",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reservationTime\": \"20:30\",\n  \"specialRequests\": \"Updated: Would like earlier time if possible\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservations/{{reservation_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", "{{reservation_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cancel Reservations",
+      "item": [
+        {
+          "name": "Cancel Reservation",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"cancelled\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservations/{{reservation_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["reservations", "{{reservation_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api"
+    }
+  ]
+}
+
