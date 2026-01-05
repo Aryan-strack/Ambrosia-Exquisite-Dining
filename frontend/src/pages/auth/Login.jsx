@@ -33,7 +33,7 @@ const Login = () => {
             <div className="hidden lg:flex w-1/2 relative overflow-hidden bg-brand-black">
                 <div className="absolute inset-0 bg-brand-black/40 z-10" />
                 <img
-                    src="https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                    src="https://images.pexels.com/photos/776538/pexels-photo-776538.jpeg?auto=compress&cs=tinysrgb&w=1920"
                     alt="Fine Dining"
                     className="absolute inset-0 w-full h-full object-cover"
                 />

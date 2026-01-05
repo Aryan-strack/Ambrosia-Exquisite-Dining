@@ -89,8 +89,8 @@ const Contact = () => {
                 <button
                   onClick={() => setActiveTab('message')}
                   className={`flex-1 py-6 flex items-center justify-center gap-2 font-display font-bold transition-all ${activeTab === 'message'
-                      ? 'bg-white text-brand-gold border-t-4 border-brand-gold'
-                      : 'text-gray-400 hover:text-gray-600'
+                    ? 'bg-white text-brand-gold border-t-4 border-brand-gold'
+                    : 'text-gray-400 hover:text-gray-600'
                     }`}
                 >
                   <FaPaperPlane /> Send a Message
@@ -98,8 +98,8 @@ const Contact = () => {
                 <button
                   onClick={() => setActiveTab('reservation')}
                   className={`flex-1 py-6 flex items-center justify-center gap-2 font-display font-bold transition-all ${activeTab === 'reservation'
-                      ? 'bg-white text-brand-gold border-t-4 border-brand-gold'
-                      : 'text-gray-400 hover:text-gray-600'
+                    ? 'bg-white text-brand-gold border-t-4 border-brand-gold'
+                    : 'text-gray-400 hover:text-gray-600'
                     }`}
                 >
                   <FaCalendarCheck /> Book a Table
@@ -276,8 +276,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">Open Hours</p>
-                    <p className="text-sm">Tue - Sun: 11:00 AM - 11:00 PM</p>
-                    <p className="text-xs text-brand-red font-bold mt-1">Monday Closed</p>
+                    <p className="text-sm">Monday - Thursday: 11:00 AM - 11:00 PM & Saturday - Sunday: 11:00 AM - 11:00 PM</p>
+                    <p className="text-xs text-brand-red font-bold mt-1">Friday Closed</p>
                   </div>
                 </div>
               </div>
